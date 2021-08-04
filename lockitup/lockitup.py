@@ -454,9 +454,9 @@ class LockItUp(commands.Cog):
         chan_count = len(get_channel)
         e_list = []
         msg = ""
-            for chan_id in get_channel:
-                channel_name = f"<#{chan_id}>"
-                msg += f"`{chan_id}` -- {channel_name}\n"
+        for chan_id in get_channel:
+            channel_name = f"<#{chan_id}>"
+            msg += f"`{chan_id}` -- {channel_name}\n"
 
         for page in pagify(msg, shorten_by=1000):
             e = discord.Embed(
