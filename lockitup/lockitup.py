@@ -467,6 +467,7 @@ class LockItUp(commands.Cog):
         
             check_specs = fetch_all["nondefault"]
             if check_specs:
+                # spec_list = []
                 e.add_field(
                     name="Special Role",
                     value=f"<@&{get_sec_role}> — `{get_sec_role}`" if get_sec_role else "**None**",
@@ -481,6 +482,7 @@ class LockItUp(commands.Cog):
                     value=f"{spec_msg}" if get_sec_chans else "**None**",
                     inline=False,
                 )
+                # spec_list.append(e)
             if get_vc:
                 vc_list = ""
                 for c in get_vc:
@@ -504,7 +506,7 @@ class LockItUp(commands.Cog):
             )
             e.set_author(name=ctx.guild.name, icon_url=guild.icon_url)
             e.set_footer(text="Lockdown Configuration")
-        e_list.append(e)
+            e_list.append(e)
 
         await menu(ctx, e_list, DEFAULT_CONTROLS)
 
