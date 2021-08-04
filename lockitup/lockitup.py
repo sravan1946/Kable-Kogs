@@ -503,7 +503,7 @@ class LockItUp(commands.Cog):
             )
             e.set_author(name=ctx.guild.name, icon_url=guild.icon_url)
             e.set_footer(text="Lockdown Configuration")
-        e_list.append(e)
+            e_list.append(e)
 
         await menu(ctx, e_list, DEFAULT_CONTROLS)
 
