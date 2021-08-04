@@ -447,95 +447,65 @@ class LockItUp(commands.Cog):
         check_silent = fetch_all["send_alert"]
         get_vc = fetch_all["vc_channels"]
         get_music = fetch_all["music_channels"]
-
-        chan_count = len(get_channel)
+        
         if not get_channel:
-            e = discord.Embed(
-                color=await ctx.embed_color(),
-                title="Lockdown Settings:",
-                description="No channels added",
-            )
-            check_specs = fetch_all["nondefault"]
-            if check_specs:
-                e.add_field(
-                    name="Special Role",
-                    value=f"<@&{get_sec_role}> — `{get_sec_role}`" if get_sec_role else "**None**",
-                    inline=False,
-                )
-                spec_msg = ""
-                for chan_id in get_sec_chans:
-                    channel_name = f"<#{chan_id}>"
-                    spec_msg += f"`{chan_id}` — {channel_name}\n"
-                e.add_field(
-                    name="Special Channels",
-                    value=f"{spec_msg}" if get_sec_chans else "**None**",
-                    inline=False,
-                )
-            e.add_field(name="Lock Message:", value=get_lock or "**None**")
-            e.add_field(name="Unlock Message:", value=get_unlock or "**None**")
-            e.add_field(
-                name="Channel Notification:",
-                value="**Enabled**" if check_silent else "**Disabled**",
-            )
-            return await ctx.send(embed=e)
-        else:
-            msg = ""
+            return await ctx.send(f"Dont see channels in your config, try adding some with `{ctx.prefix}lds addchan`")
+        
+        chan_count = len(get_channel)
+        e_list = []
+        msg = ""
             for chan_id in get_channel:
                 channel_name = f"<#{chan_id}>"
-                msg += f"`{chan_id}` — {channel_name}\n"
+                msg += f"`{chan_id}` -- {channel_name}\n"
 
-        e_list = []
         for page in pagify(msg, shorten_by=1000):
             e = discord.Embed(
                 color=await ctx.embed_color(),
                 title="Lockdown Settings:",
                 description="Channels: {}\n{}".format(chan_count, page),
             )
-            e.add_field(name="Lock Message:", value=get_lock or "**None**", inline=False)
+        
+        check_specs = fetch_all["nondefault"]
+        if check_specs:
             e.add_field(
-                name="Unlock Message:",
-                value=get_unlock or "**None**",
-                inline=False,
+                name="Special Role",
+                value=f"<@&{get_sec_role}> — `{get_sec_role}`" if get_sec_role else "**None**",
+                    inline=False,
             )
-
-            check_specs = fetch_all["nondefault"]
-            if check_specs:
-                e.add_field(
-                    name="Special Role",
-                    value=f"<@&{get_sec_role}> — `{get_sec_role}`" if get_sec_role else "**None**",
-                    inline=False,
-                )
-                spec_msg = ""
-                for chan_id in get_sec_chans:
-                    channel_name = f"<#{chan_id}>"
-                    spec_msg += f"`{chan_id}` — {channel_name}\n"
-                e.add_field(
-                    name="Special Channels",
-                    value=f"{spec_msg}" if get_sec_chans else "**None**",
-                    inline=False,
-                )
-            if get_vc:
-                vc_list = ""
-                for c in get_vc:
-                    c_name = ctx.guild.get_channel(c)
-                    vc_list += f"{c_name}\n"
-                e.add_field(name="Voice Channels", value=f"{vc_list}", inline=False)
-
-            if get_music:
-                music_list = ""
-                for mc in get_music:
-                    mc_name = ctx.guild.get_channel(mc)
-                    music_list += f"{mc_name}\n"
-                e.add_field(name="Music Channels", value=f"{music_list}", inline=False)
-
+            spec_msg = ""
+            for chan_id in get_sec_chans:
+                channel_name = f"<#{chan_id}>"
+                spec_msg += f"`{chan_id}` — {channel_name}\n"
             e.add_field(
-                name="Channel Notification:",
-                value="**Enabled**" if check_silent else "**Disabled**",
+                name="Special Channels",
+                value=f"{spec_msg}" if get_sec_chans else "**None**",
                 inline=False,
+                )
+        
+        e.add_field(name="Lock Message:", value=get_lock or "**None**")
+        e.add_field(name="Unlock Message:", value=get_unlock or "**None**")
+        e.add_field(
+            name="Channel Notification:",
+            value="**Enabled**" if check_silent else "**Disabled**",
             )
-            e.set_author(name=ctx.guild.name, icon_url=guild.icon_url)
-            e.set_footer(text="Lockdown Configuration")
-            e_list.append(e)
+            # return await ctx.send(embed=e)
+        if get_vc:
+            vc_list = ""
+            for c in get_vc:
+                c_name = ctx.guild.get_channel(c)
+                vc_list += f"{c_name}\n"
+            e.add_field(name="Voice Channels", value=f"{vc_list}", inline=False)
+
+        if get_music:
+            music_list = ""
+            for mc in get_music:
+                 mc_name = ctx.guild.get_channel(mc)
+                music_list += f"{mc_name}\n"
+            e.add_field(name="Music Channels", value=f"{music_list}", inline=False)
+
+        e.set_author(name=ctx.guild.name, icon_url=guild.icon_url)
+        e.set_footer(text="Lockdown Configuration")
+        e_list.append(e)
 
         await menu(ctx, e_list, DEFAULT_CONTROLS)
 
