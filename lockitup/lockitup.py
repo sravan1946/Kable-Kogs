@@ -491,7 +491,7 @@ class LockItUp(commands.Cog):
             if get_music:
                 music_list = ""
                 for mc in get_music:
-                     mc_name = ctx.guild.get_channel(mc)
+                    mc_name = ctx.guild.get_channel(mc)
                     music_list += f"{mc_name}\n"
                 e.add_field(name="Music Channels", value=f"{music_list}", inline=False)
 
@@ -500,10 +500,11 @@ class LockItUp(commands.Cog):
             e.add_field(
                 name="Channel Notification:",
                 value="**Enabled**" if check_silent else "**Disabled**",
+                inline=False
             )
             e.set_author(name=ctx.guild.name, icon_url=guild.icon_url)
             e.set_footer(text="Lockdown Configuration")
-            e_list.append(e)
+        e_list.append(e)
 
         await menu(ctx, e_list, DEFAULT_CONTROLS)
 
