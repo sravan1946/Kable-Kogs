@@ -447,10 +447,12 @@ class LockItUp(commands.Cog):
         check_silent = fetch_all["send_alert"]
         get_vc = fetch_all["vc_channels"]
         get_music = fetch_all["music_channels"]
-        
+
         if not get_channel:
-            return await ctx.send(f"Dont see channels in your config, try adding some with `{ctx.prefix}lds addchan`")
-        
+            return await ctx.send(
+                f"Dont see channels in your config, try adding some with `{ctx.prefix}lds addchan`"
+            )
+
         chan_count = len(get_channel)
         e_list = []
         msg = ""
@@ -464,7 +466,7 @@ class LockItUp(commands.Cog):
                 title="Lockdown Settings:",
                 description="Channels: {}\n{}".format(chan_count, page),
             )
-        
+
             check_specs = fetch_all["nondefault"]
             if check_specs:
                 # spec_list = []
@@ -502,7 +504,7 @@ class LockItUp(commands.Cog):
             e.add_field(
                 name="Channel Notification:",
                 value="**Enabled**" if check_silent else "**Disabled**",
-                inline=False
+                inline=False,
             )
             e.set_author(name=ctx.guild.name, icon_url=guild.icon_url)
             e.set_footer(text="Lockdown Configuration")
