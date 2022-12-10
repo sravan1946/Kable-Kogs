@@ -103,19 +103,20 @@ class Decancer(commands.Cog):
         dc_type: str,
     ):
         channel = guild.get_channel(await self.config.guild(guild).modlogchannel())
-        if not channel or not (
-            channel.permissions_for(guild.me).send_messages
-            and channel.permissions_for(guild.me).embed_links
+        if (
+            not channel
+            or not channel.permissions_for(guild.me).send_messages
+            or not channel.permissions_for(guild.me).embed_links
         ):
             await self.config.guild(guild).modlogchannel.clear()
             return
-        color = 0x2FFFFF
         description = [
             f"**Offender:** {member} {member.mention}",
-            f"**Reason:** Remove cancerous characters from previous name",
+            "**Reason:** Remove cancerous characters from previous name",
             f"**New Nickname:** {new_nick}",
             f"**Responsible Moderator:** {moderator} {moderator.mention}",
         ]
+        color = 0x2FFFFF
         embed = discord.Embed(
             color=discord.Color(color),
             title=dc_type,
@@ -135,7 +136,7 @@ class Decancer(commands.Cog):
         elif nickType == 3:
             adjective = random.choice(adjectives)
             new_nick = adjective.lower()
-        if nickType == 4:
+        elif nickType == 4:
             nounNicks = nouns, properNouns
             new_nick = random.choice(random.choices(nounNicks, weights=map(len, nounNicks))[0])
         return new_nick
@@ -283,7 +284,7 @@ class Decancer(commands.Cog):
 
         if user.top_role >= ctx.me.top_role:
             return await ctx.send(
-                f"I can't decancer that user since they are higher than me in heirarchy."
+                "I can't decancer that user since they are higher than me in heirarchy."
             )
         m_nick = user.display_name
         new_cool_nick = await self.nick_maker(ctx.guild, m_nick)

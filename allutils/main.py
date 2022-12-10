@@ -113,7 +113,7 @@ class AllUtils(commands.Cog):
         if guild_id is not None and await self.bot.is_owner(ctx.author):
             guild = self.bot.get_guild(guild_id)
             if guild is None:
-                return await ctx.send(f"Invalid Guild ID given.")
+                return await ctx.send("Invalid Guild ID given.")
         else:
             guild = ctx.guild
 
@@ -150,13 +150,12 @@ class AllUtils(commands.Cog):
             discord.VoiceChannel: "<:voice:777109848499290113>",
         }
         for key, total in totals.items():
-            secrets = secret[key]
             try:
                 emoji = key_to_emoji[key]
             except KeyError:
                 continue
 
-            if secrets:
+            if secrets := secret[key]:
                 channel_info.append(f"{emoji} {total} ({secrets} locked)")
             else:
                 channel_info.append(f"{emoji} {total}")
@@ -179,13 +178,11 @@ class AllUtils(commands.Cog):
             "BANNER": "Banner",
         }
 
-        info = [
+        if info := [
             f"<:agree:749441222954844241>: {label}"
             for feature, label in all_features.items()
             if feature in features
-        ]
-
-        if info:
+        ]:
             e.add_field(name="Features", value="\n".join(info))
 
         e.add_field(name="Channels", value="\n".join(channel_info))

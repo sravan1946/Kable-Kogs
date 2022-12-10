@@ -65,7 +65,7 @@ class FormatPlaceholder:
     def __format__(self, spec):
         result = self.key
         if spec:
-            result += ":" + spec
+            result += f":{spec}"
         return "{" + result + "}"
 
     def __getitem__(self, index):
